@@ -42,4 +42,4 @@ public class Lettore {
             throw new IllegalArgumentException("formato libro non valido");
         }
     }
-} 
+}

@@ -46,7 +46,7 @@ public class Libro {
         }
     }
     int checknPagine(int nPagine){
-        if (nPagine > 0){
+        if (nPagine <= 0){
             throw new IllegalArgumentException("ERRORE: numero pagine non valido!");
         } else {
             return nPagine;
@@ -91,6 +91,9 @@ public class Libro {
     }
     void setnPagine(int nPagine){
         this.nPagine = checknPagine(nPagine);
+    }
+    void setInPrestito(boolean inPrestito) {
+        this.inPrestito=inPrestito;
     }
 
     // manca set codice e in prestito

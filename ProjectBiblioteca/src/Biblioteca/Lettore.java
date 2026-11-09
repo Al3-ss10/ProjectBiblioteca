@@ -30,7 +30,9 @@ public class Lettore {
             libri.put(key, val);
         }
     }
-
+    String getNome() {
+        return nome;
+    }
     void setNome(String nome) {
         this.nome = CheckNome(nome);
     }

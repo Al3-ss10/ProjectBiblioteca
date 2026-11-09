@@ -11,7 +11,7 @@ public class Libro {
     private int nPagine;
     private String codice;
     private boolean inPrestito;
-    // private DateTime durataPrestito;
+    // private DateTime durataPrestito ;
 
     Random random = new Random();
 

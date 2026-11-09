@@ -15,7 +15,7 @@ public class Lettore {
     }
 
     void PrendiLibro(Libro libro) {
-        //librocorrente.presta(); String NomeCorrente = libroCorrente.getTitolo(); libri.put(NomeCorrente,0);
+        //librocorrente.presta();  String NomeCorrente = libroCorrente.getTitolo(); libri.put(NomeCorrente,0);
     }
 
     void RestituisciLibro(Libro libro) {

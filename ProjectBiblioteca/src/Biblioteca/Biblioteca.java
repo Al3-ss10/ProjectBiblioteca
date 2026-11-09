@@ -40,7 +40,7 @@ public class Biblioteca {
             if (libro.getGenere().equals("romanzo")) counterRomanzo++;
             if (libro.getGenere().equals("commedia")) counterCommedia++;
             if (libro.getGenere().equals("storico")) counterStorico++;
-            if (libro.getGenere().equals("romance")) counterRomance++;
+            if (libro.getGenere().equals("romance"))  counterRomance++;
         } */
         return indexLibri.size()+" libri, di cui:"+
             "\nThriller: "+counterThriller+" - Giallo: "+counterGiallo+

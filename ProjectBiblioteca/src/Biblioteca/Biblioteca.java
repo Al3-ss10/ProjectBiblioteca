@@ -1,25 +1,29 @@
 package Biblioteca;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Biblioteca {
     private String nome;
     private String paese;
-    private ArrayList<Libro> lista;
+    private Map<String, ArrayList<Object>> indexLibri;
+    //<nome del libro, + tutte le informazioni>
 
     Biblioteca(String nome, String paese) {
-        if (nome.length()<5) throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
+        if (nome.length()<5)
+            throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
         this.nome=nome;
-        if (paese.length()<5) throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
+        if (paese.length()<5)
+            throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
         this.paese=paese;
-        lista=new ArrayList<>();
+        indexLibri=new HashMap<>();
     }
 
     String getNome() {return nome;}
     String getPaese() {return paese;}
-    ArrayList<Libro> getLista() {return lista;}
 
-    int getSize() {return lista.size();}
-    /* String getSpecifiedSize() {
+    int getSize() {return indexLibri.size();}
+    String getSpecifiedSize() {
         int counterThriller=0;
         int counterGiallo=0;
         int counterHorror=0;
@@ -29,7 +33,7 @@ public class Biblioteca {
         int counterCommedia=0;
         int counterStorico=0;
         int counterRomance=0;
-        for (Libro libro:lista) {
+        /* for (Libro libro:listaLibri) {
             if (libro.getGenere().equals("thriller")) counterThriller++;
             if (libro.getGenere().equals("giallo")) counterGiallo++;
             if (libro.getGenere().equals("horror")) counterHorror++;
@@ -38,9 +42,9 @@ public class Biblioteca {
             if (libro.getGenere().equals("romanzo")) counterRomanzo++;
             if (libro.getGenere().equals("commedia")) counterCommedia++;
             if (libro.getGenere().equals("storico")) counterStorico++;
-            if (libro.getGenere().equals("romance")) counterRomance++;
-        }
-        return lista.size()+" libri, di cui: "+
+            if (libro.getGenere().equals("romance"))  counterRomance++;
+        } */
+        return indexLibri.size()+" libri, di cui:"+
             "\nThriller: "+counterThriller+" - Giallo: "+counterGiallo+
             "\nHorror: "+counterHorror+" - Fantasy: "+counterFantasy+
             "\nScifi: "+counterSciFi+" - Romanzo: "+counterRomanzo+
@@ -48,24 +52,28 @@ public class Biblioteca {
             "\nRomance: "+counterRomance;
     }
 
-    void prestaLibro(Libro libro) {
-        if (lista.indexOf(libro).isInPrestito()) throw new IllegalArgumentException("Libro già in prestito!");
-        lista.indexOf(libro).isInPrestito()=false
+    /* void prestaLibro(Libro libro, Lettore lettore) {
+        if (listaLibri.get(listaLibri.indexOf(libro)).getInPrestito())
+            throw new IllegalArgumentException("Libro già in prestito!");
+        listaLibri.get(listaLibri.indexOf(libro)).setInPrestito(false);
+        indexLibri.get(libro)
     }
-    void restituisciLibro(Libro libro) {
-        if (!lista.indexOf(libro).isInPrestito()) throw new IllegalArgumentException("Il libro non è mai stato prestato!");
-        lista.indexOf(libro).isInPrestito()=true;
-    } */
-
+    void restituisciLibro(Libro libro, Lettore lettore) {
+        if (!listaLibri.get(listaLibri.indexOf(libro)).getInPrestito())
+            throw new IllegalArgumentException("Il libro non è mai stato prestato!");
+        listaLibri.get(listaLibri.indexOf(libro)).setInPrestito(true);
+    }
     void addLibro(Libro libro) {
-        lista.add(libro);
-        IO.println("Nuovo libro! /*titolo*/ di /*autore*/ !");
+        indexLibri.put(libro.getTitolo(), libro.getAutore());
+        IO.println("Nuovo libro! "+libro.getTitolo()+" di "+libro.getAutore()+"!");
     }
 
-    /* @Override
+    @Override
     public String toString() {
-        String str;
-        for (Libro libro:lista) str+=libro.getNome()+" - "+libro.getAutore()+"\n";
-        return "Nome: "+nome+"\nLibri: "+str;
+        String libri=""; //qua ci aggiungiamo le informazioni su ogni libro
+        String name="Nome: "+nome+"\nLibri:\n";
+        for (Libro libro:) libri=libri.concat(
+                "- "+libro.getTitolo()+" di "+libro.getAutore()+"(");
+        return name+libri;
     } */
 }

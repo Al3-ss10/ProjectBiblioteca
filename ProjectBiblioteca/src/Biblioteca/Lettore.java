@@ -1,33 +1,37 @@
 package Biblioteca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Lettore {
     private String codice;
-    private Map<String, Integer> libri;
-    //per ora int, poi datetime public
+    private Map<String, LocalDate> libri;
 
     Lettore(String codice) {
-        libri = new HashMap<String, Integer>();
+        libri = new HashMap<String, LocalDate>();
         this.codice = CheckCodice(codice);
     }
 
     void PrendiLibro(Libro libro) {
-        //librocorrente.presta(); String NomeCorrente = libroCorrente.getTitolo(); libri.put(NomeCorrente,0);
+        //dare anche oggetto Biblioteca, controllare se la biblioteca ha quel libro e se è in prestito o no + log prestito
+        String CodiceCorrente=libro.getCodice();
+        LocalDate oggi=LocalDate.now();
+        libri.put(CodiceCorrente,oggi);
     }
 
     void RestituisciLibro(Libro libro) {
-        int giorni = libri.get(codice);
+        //dare anche oggetto Biblioteca, controllare se la biblioteca ha quel libro e se è in prestito o no + log restituzione
+        LocalDate giorni = libri.get(codice);
         IO.println("restituito il libro dopo " + giorni + "giorni");
     }
 
     void AggiornaTempo() {
         for (String key : libri.keySet()) {
-            int val = libri.get(key);
-            val += 1;
-            libri.put(key, val);
+            LocalDate giorno = libri.get(key);
+            giorno.plusDays(1);
+            libri.put(key, giorno);
         }
     }
 

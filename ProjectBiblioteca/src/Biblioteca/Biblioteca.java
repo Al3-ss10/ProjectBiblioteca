@@ -6,13 +6,15 @@ import java.util.HashMap;
 public class Biblioteca {
     private String nome;
     private String paese;
-    private Map<String, String> indexLibri;
-    //<nome del libro, nome del lettore>
+    private Map<String, ArrayList<Object>> indexLibri;
+    //<nome del libro, + tutte le informazioni>
 
     Biblioteca(String nome, String paese) {
-        if (nome.length()<5) throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
+        if (nome.length()<5)
+            throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
         this.nome=nome;
-        if (paese.length()<5) throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
+        if (paese.length()<5)
+            throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
         this.paese=paese;
         indexLibri=new HashMap<>();
     }

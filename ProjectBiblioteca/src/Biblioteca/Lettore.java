@@ -5,21 +5,21 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Lettore {
-    private String nome;
+    private String codice;
     private Map<String, Integer> libri;
     //per ora int, poi datetime public
 
-    Lettore(String nome) {
+    Lettore(String codice) {
         libri = new HashMap<String, Integer>();
-        this.nome = CheckNome(nome);
+        this.codice = CheckCodice(codice);
     }
 
     void PrendiLibro(Libro libro) {
-        //librocorrente.presta();  String NomeCorrente = libroCorrente.getTitolo(); libri.put(NomeCorrente,0);
+        //librocorrente.presta(); String NomeCorrente = libroCorrente.getTitolo(); libri.put(NomeCorrente,0);
     }
 
     void RestituisciLibro(Libro libro) {
-        int giorni = libri.get(libro);
+        int giorni = libri.get(codice);
         IO.println("restituito il libro dopo " + giorni + "giorni");
     }
 
@@ -30,16 +30,14 @@ public class Lettore {
             libri.put(key, val);
         }
     }
-    String getNome() {
-        return nome;
-    }
-    void setNome(String nome) {
-        this.nome = CheckNome(nome);
+
+    void setCodice(String codice) {
+        this.codice = CheckCodice(codice);
     }
 
-    String CheckNome(String nome) {
-        if (nome == null || nome.length() >= 20) {
-            return nome;
+    String CheckCodice(String codice) {
+        if (codice == null || codice.length() >= 20) {
+            return codice;
         } else {
             throw new IllegalArgumentException("formato libro non valido");
         }

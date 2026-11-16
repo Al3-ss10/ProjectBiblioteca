@@ -2,52 +2,65 @@ package Biblioteca;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.time.LocalDate;
 
 public class Biblioteca {
     private String nome;
     private String paese;
-    private ArrayList<Libro> listaLibri;
-    /*dizionario con valori booleani (libro prestato o no)
-    ogni lettore prende un libro dalla biblioteca*/
+    private ArrayList<String> listaLibri;
+    private Map<String,Boolean> libriprestati;
 
-    Biblioteca(String nome, String paese) {
+    public Biblioteca(String nome, String paese) {
         if (nome.length()<5)
             throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
         this.nome=nome;
         if (paese.length()<5)
             throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
         this.paese=paese;
+        listaLibri=new ArrayList<>();
+        libriprestati=new HashMap<String,Boolean>();
+
     }
 
-    String getNome() {return nome;}
-    String getPaese() {return paese;}
+    public String getNome() {return nome;}
+    public String getPaese() {return paese;}
+    public ArrayList<String> getListaLibri() {return listaLibri;}
+    public Map<String, Boolean> getLibriprestati() {return libriprestati;}
 
-    void prestaLibro(Libro libro, Lettore lettore) {
-        if (!listaLibri.contains(libro))
-            throw new IllegalArgumentException("Non abbiamo quel libro!");
-        if (listaLibri.get(listaLibri.indexOf(libro)).getInPrestito())
-            throw new IllegalArgumentException("Libro già in prestito!");
+    public void setLibriprestato(String codice, boolean valore) {
+        if (checkLibroPresente(codice)) {
+            if (checkPrestato(codice) == valore) {
+                throw new IllegalArgumentException("non è cambiato nulla");
+            } else {
+                libriprestati.put(codice, valore);
+            }
+        }else{
+            throw new IllegalArgumentException("libro non presente in biblioteca");
+        }
+    }
+    public void addLibro(Libro libro,Log log) {
+        listaLibri.add(libro.getId());
+        libriprestati.put(libro.getId(),false);
+        log.AggiungiLog("Nuovo libro! "+libro.getTitolo()+" di "+libro.getAutore()+"!");
+    }
+    public boolean checkLibroPresente(String codice){
+        return listaLibri.contains(codice);
+    }
 
-        listaLibri.get(listaLibri.indexOf(libro)).setInPrestito(false);
-    }
-    void restituisciLibro(Libro libro, Lettore lettore) {
-        if (!listaLibri.get(listaLibri.indexOf(libro)).getInPrestito())
-            throw new IllegalArgumentException("Il libro non è mai stato prestato!");
-        listaLibri.get(listaLibri.indexOf(libro)).setInPrestito(true);
-    }
-    void addLibro(Libro libro) {
-        listaLibri.add(libro);
-        IO.println("Nuovo libro! "+libro.getTitolo()+" di "+libro.getAutore()+"!");
+    public boolean checkPrestato(String codice){
+        if (checkLibroPresente(codice)){
+            return libriprestati.get(codice);
+        }else {
+            throw new IllegalArgumentException("libro non presente");
+        }
     }
 
     @Override
     public String toString() {
-        String libri=""; //qua ci aggiungiamo le informazioni su ogni libro
-        String name="Nome: "+nome+"\nLibri:\n";
-        for (Libro libro:listaLibri) libri=libri.concat(
-                "- "+libro.getTitolo()+" di "+libro.getAutore()+"("+libro.getAnno()+")\n");
-        return name+libri;
+        String testo="";
+        for (String cod: libriprestati.keySet()){
+            boolean prestato=libriprestati.get(cod);
+            testo+=cod+": "+((prestato)?"non disponibile":"disponibile")+"\n";
+        }
+        return "nome: "+nome+"\n"+ "paese: "+paese+"\n"+testo;
     }
 }
- 

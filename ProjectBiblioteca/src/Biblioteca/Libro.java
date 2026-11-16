@@ -14,19 +14,21 @@ public class Libro {
     private int nPagine;
     private String id;
     private String isbn;
-    private boolean inPrestito;
+
     private static ArrayList<String> listaID = new ArrayList<>();
     private static ArrayList<String> listaISBN = new ArrayList<>();
-    // private DateTime durataPrestito;
+
 
     Random random = new Random();
 
-    Libro(String titolo, String autore, GenereLibro genere, int anno, int nPagine){
+    public Libro(String titolo, String autore, GenereLibro genere, int anno, int nPagine){
         this.titolo = checkTitolo(titolo);
         this.autore = checkAutore(autore);
         this.genere = genere;
         this.anno = checkAnno(anno);
         this.nPagine = checknPagine(nPagine);
+        randomID();
+        randomISBN();
     }
 
     // ----- CHECK -----
@@ -60,57 +62,55 @@ public class Libro {
     }
 
     // ----- GET -----
-    String getTitolo(){
+    public String getTitolo(){
         return titolo;
     }
-    String getAutore(){
+    public String getAutore(){
         return autore;
     }
-    GenereLibro getGenere(){
+    public GenereLibro getGenere(){
         return genere;
     }
-    int getAnno(){
+    public int getAnno(){
         return anno;
     }
-    int getnPagine(){
+    public int getnPagine(){
         return nPagine;
     }
-    String getId(){
+    public String getId(){
         return this.id;
     }
-    String getIsbn() {return this.isbn;}
-    boolean getInPrestito(){
-        return inPrestito;
-    }
+    public String getIsbn() {return this.isbn;}
+
 
     // ----- SET -----
-    void setTitolo(String titolo){
+    public void setTitolo(String titolo){
         this.titolo = checkTitolo(titolo);
     }
-    void setAutore(String autore){
+    public void setAutore(String autore){
         this.autore = checkAutore(autore);
     }
-    void setGenere(GenereLibro genere){
+    public void setGenere(GenereLibro genere){
         this.genere = genere;
     }
-    void setAnno(int anno){
+    public void setAnno(int anno){
         this.anno = checkAnno(anno);
     }
-    void setnPagine(int nPagine){
+    public void setnPagine(int nPagine){
         this.nPagine = checknPagine(nPagine);
     }
-    void setInPrestito(boolean inPrestito) {this.inPrestito = inPrestito;}
+
 
     // ----- TO STRING -----
     @Override
     public String toString() {
         return titolo.toUpperCase() + " di " + autore.toUpperCase() + "\n" +
                 "   - genere " + genere + " - id " + id + " - isbn " + isbn + "\n" +
-                "   - n° pag " + nPagine + " - anno di pubblicazione " + anno + " - in prestito (" + inPrestito + ")\n";
+                "   - n° pag " + nPagine + " - anno di pubblicazione " + anno + "\n";
     }
 
     // ----- METODI -----
-    void randomID(){
+    public void randomID(){
         String[] caratteri = {
                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
                 "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
@@ -118,8 +118,9 @@ public class Libro {
                 "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
         };
+        String id;
         do {
-            String id = "";
+            id="";
             for (int i = 0; i < 5; i++) {
                 int indiceCasuale = random.nextInt(caratteri.length);
                 id += caratteri[indiceCasuale];
@@ -128,7 +129,7 @@ public class Libro {
         this.id = id;
         listaID.add(id);
     }
-    void randomISBN(){
+    public void randomISBN(){
         Map<String, String> dizionarioGenere = Map.of(
                 "thriller","00001",
                 "giallo","00002",
@@ -140,9 +141,9 @@ public class Libro {
                 "storico","00008",
                 "romance","00009"
         );
-
+        String isbn;
         do {
-            String isbn = "978-88-";
+            isbn = "978-88-";
 
             isbn += dizionarioGenere.get(genere.name());
             isbn += "-";
@@ -158,7 +159,7 @@ public class Libro {
             for (int i = 0; i < soloCifre.length(); i++) {
                 int cifra = Character.getNumericValue(soloCifre.charAt(i));
                 if (i % 2 == 0) {
-                    somma += cifra * 1;
+                    somma += cifra;
                 } else {
                     somma += cifra * 3;
                 }

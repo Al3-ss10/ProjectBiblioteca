@@ -3,15 +3,18 @@ import java.util.ArrayList;
 
 
 public class Log {
-    ArrayList<String> logs;
+    private ArrayList<String> logs;
 
-    Log(){
+    public Log(){
+
         logs= new ArrayList<>();
     }
-    ArrayList getLog(){
+    ArrayList<String> getLog(){
+
         return logs;
     }
-    void AggiungiLog(String testo){
+    public void AggiungiLog(String testo){
+
         logs.add(testo);
     }
 
@@ -19,7 +22,7 @@ public class Log {
     public String toString() {
         String txt = "";
         for (String testo: logs){
-            txt = txt + testo + "\n";
+            txt += testo + "\n";
         }
         return txt;
     }

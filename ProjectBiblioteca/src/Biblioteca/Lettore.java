@@ -11,11 +11,11 @@ public class Lettore {
 
     private Map<Libro, Integer> libri;
 
-    public Lettore(String nome, int eta, LocalDate oggi) {
+    public Lettore(String nome, int eta) {
         libri = new HashMap<Libro, Integer>();
         this.nome=checkNome(nome.strip().toLowerCase());
         this.eta=checkEta(eta);
-        this.oggi=oggi;
+        oggi=LocalDate.now();
     }
 
     // -- Checkers -- \\
@@ -62,8 +62,8 @@ public class Lettore {
         } else {
             LocalDate oggi=LocalDate.now();
             libri.put(libro, 0);
-            log.AggiungiLog(oggi + ": preso in prestito il libro: "+libro.getTitolo());
             biblioteca.setLibriprestato(CodiceCorrente,true);
+            log.AggiungiLog(oggi + ": preso in prestito il libro: "+libro.getTitolo());
         }
     }
 
@@ -76,7 +76,7 @@ public class Lettore {
         int data;
         if (biblioteca.checkPrestato(codice)) {
             data = libri.get(libro);
-            log.AggiungiLog(data + ": restituito il libro: "+libro.getTitolo());
+            log.AggiungiLog(oggi.plusDays(data) + ": restituito il libro: "+libro.getTitolo());
             libri.remove(libro);
             biblioteca.setLibriprestato(codice,false);
         }

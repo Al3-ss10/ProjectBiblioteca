@@ -18,8 +18,7 @@ public class Libro {
     private static ArrayList<String> listaID = new ArrayList<>();
     private static ArrayList<String> listaISBN = new ArrayList<>();
 
-
-    Random random = new Random();
+    private Random random = new Random();
 
     public Libro(String titolo, String autore, GenereLibro genere, int anno, int nPagine){
         this.titolo = checkTitolo(titolo);
@@ -110,7 +109,7 @@ public class Libro {
     }
 
     // ----- METODI -----
-    public void randomID(){
+    private void randomID(){
         String[] caratteri = {
                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
                 "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
@@ -118,7 +117,7 @@ public class Libro {
                 "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
         };
-        String id;
+        String id = "";
         do {
             id="";
             for (int i = 0; i < 5; i++) {
@@ -129,7 +128,7 @@ public class Libro {
         this.id = id;
         listaID.add(id);
     }
-    public void randomISBN(){
+    private void randomISBN(){
         Map<String, String> dizionarioGenere = Map.of(
                 "thriller","00001",
                 "giallo","00002",
@@ -141,7 +140,7 @@ public class Libro {
                 "storico","00008",
                 "romance","00009"
         );
-        String isbn;
+        String isbn = "978-88-";
         do {
             isbn = "978-88-";
 

@@ -12,13 +12,30 @@ public class Biblioteca {
     public Biblioteca(String nome, String paese) {
         if (nome.length()<5)
             throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
-        this.nome=nome;
-        if (paese.length()<5)
-            throw new IllegalArgumentException("Il nome del paese deve avere almeno 5 caratteri!");
-        this.paese=paese;
+        this.nome=checkNome(nome);
+
+        this.paese=checkpaese(paese);
+
         listaLibri=new ArrayList<>();
         libriprestati=new HashMap<String,Boolean>();
 
+    }
+
+    private String checkNome(String nome){
+        if (nome.isEmpty()){throw new IllegalArgumentException("nome inesistente");}
+        else{return nome;}
+    }
+    private String checkpaese(String paese){
+        if (paese.isEmpty()){throw new IllegalArgumentException("paese inesistente");}
+        else{return paese;}
+    }
+
+    public void setNome(String nome) {
+        this.nome=checkNome(nome);
+    }
+
+    public void setPaese(String paese) {
+        this.paese = checkpaese(paese);
     }
 
     public String getNome() {return nome;}
@@ -29,7 +46,7 @@ public class Biblioteca {
     public void setLibriprestato(String codice, boolean valore) {
         if (checkLibroPresente(codice)) {
             if (checkPrestato(codice) == valore) {
-                throw new IllegalArgumentException("non è cambiato nulla");
+                throw new IllegalArgumentException("ERRORE: libro già in prestito o libro già disponibile");
             } else {
                 libriprestati.put(codice, valore);
             }

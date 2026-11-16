@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Biblioteca.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Biblioteca.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Lettore.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Lettore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Libro.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Libro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Log.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +16,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Biblioteca.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Lettore.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Libro.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Log.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/ProjectBiblioteca/src/Biblioteca/Main.java" root0="SKIP_INSPECTION" />

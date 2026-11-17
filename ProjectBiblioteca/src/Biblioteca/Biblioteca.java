@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Biblioteca {
     private String nome;
     private String paese;
-    private ArrayList<String> listaLibri;
+    private ArrayList<Libro> listaLibri;
     private Map<String,Boolean> libriprestati;
 
     public Biblioteca(String nome, String paese) {
@@ -40,7 +40,7 @@ public class Biblioteca {
 
     public String getNome() {return nome;}
     public String getPaese() {return paese;}
-    public ArrayList<String> getListaLibri() {return listaLibri;}
+    public ArrayList<Libro> getListaLibri() {return listaLibri;}
     public Map<String, Boolean> getLibriprestati() {return libriprestati;}
 
     public void setLibriprestato(String codice, boolean valore) {
@@ -54,10 +54,9 @@ public class Biblioteca {
             throw new IllegalArgumentException("libro non presente in biblioteca");
         }
     }
-    public void addLibro(Libro libro,Log log) {
-        listaLibri.add(libro.getId());
+    public void addLibro(Libro libro) {
+        listaLibri.add(libro);
         libriprestati.put(libro.getId(),false);
-        log.AggiungiLog("Nuovo libro! "+libro.getTitolo()+" di "+libro.getAutore()+"!");
     }
     public boolean checkLibroPresente(String codice){
         return listaLibri.contains(codice);

@@ -1,6 +1,5 @@
 package Biblioteca;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +7,9 @@ import java.util.Random;
 public class Main {
     void main() {
         Biblioteca biblioteca=new Biblioteca("Biblioteca Comunale", "Dalmine");
+        Log log=new Log();
+        Random random=new Random();
+        IO.println("Benvenuto in "+biblioteca.getNome()+"\n");
 
         Lettore lettore1=new Lettore("Alessio",17);
         Lettore lettore2=new Lettore("Luca",40);
@@ -15,18 +17,13 @@ public class Main {
         ArrayList<String> eventiRandom=new ArrayList<>(List.of(
                 "Presta libro", "Restituisci libro", "Nuovo libro"
         ));
-        Log log=new Log();
 
         Libro libro1=new Libro("It","Stephen King", GenereLibro.horror, 1998, 350);
         Libro libro2=new Libro("La compagnia dell'Anello", "J.R.R.Tolkien", GenereLibro.fantasy, 1987, 500);
         Libro libro3=new Libro("I Promessi Sposi", "Alessandro Manzoni", GenereLibro.romanzo, 1840, 370);
-        ArrayList<Libro> listaLibri=new ArrayList<>(List.of(libro1, libro2, libro3));
-        biblioteca.addLibro(libro1, log);
-        biblioteca.addLibro(libro2, log);
-        biblioteca.addLibro(libro3, log);
-
-        Random random=new Random();
-        IO.println("Benvenuto in "+biblioteca.getNome());
+        biblioteca.addLibro(libro1);
+        biblioteca.addLibro(libro2);
+        biblioteca.addLibro(libro3);
 
         boolean esci=false;
         while (!esci) {
@@ -34,31 +31,70 @@ public class Main {
             Lettore lettore=listaLettori.get(random.nextInt(0, listaLettori.size()));
             switch (evento) {
                 case "Presta libro":
-                    Libro libroP=listaLibri.get(random.nextInt(0, listaLibri.size()));
-                    lettore.PrendiLibro(libroP,biblioteca,log);
-                    IO.println(lettore+" prende in prestito "+libroP);
+                    IO.println("Evento - Presa in prestito di un libro!");
+                    Libro libroP=biblioteca.getListaLibri().get(
+                            random.nextInt(0, biblioteca.getListaLibri().size()
+                            ));
+                    IO.println(lettore.getNome()+" prende in prestito "+libroP.getTitolo()+"\n");
+                    if (biblioteca.getListaLibri().contains(libroP)) {
+                        lettore.PrendiLibro(libroP,biblioteca,log);
+                        biblioteca.getListaLibri().remove(libroP);
+                    } else IO.println(libroP.getTitolo()+" non è presente!");
                     break;
+
                 case "Restituisci libro":
-                    try {
-                        Libro libroR=listaLibri.get(random.nextInt(0, listaLibri.size()));
-                        lettore.RestituisciLibro(libroR,biblioteca,log);
-                        IO.println(lettore+" restituisce "+libroR);
+                    IO.println("Evento - Restituzione di un libro!");
+                    if (lettore.getLibri().isEmpty()) {
+                        IO.println("Il lettore non ha alcun libro da restituire!\n");
+                    } else {
+                        try {
+                            //lista contenente i libri del lettore, si prende per l'evento casuale
+                            Libro libroR=new ArrayList<>(lettore.getLibri().keySet()).get(
+                                    random.nextInt(0, lettore.getLibri().size()
+                                    ));
+                            IO.println("Evento - "+lettore.getNome()+" restituisce "+libroR.getTitolo()+"\n");
+                            lettore.RestituisciLibro(libroR,biblioteca,log);
+                            biblioteca.getListaLibri().add(libroR);
+                        }
+                        catch (IllegalArgumentException IAE) {IO.println(IAE.getMessage());}
                     }
-                    catch (IllegalArgumentException IAE) {IO.println(IAE.getMessage());}
                     break;
+
                 case "Nuovo libro":
-                    IO.println("Tempo di aggiungere un nuovo libro!");
+                    IO.println("Evento - Viene aggiunto un nuovo libro!");
                     String titolo=IO.readln("Inserisci il titolo: ");
                     String autore=IO.readln("Inserisci l'autore: ");
-                    IO.println("Thriller, Giallo, Horror,\nFantasy, Scifi, Romanzo,\nCommedia, Storico, Romance");
-                    GenereLibro genere=GenereLibro.valueOf(IO.readln("Inserisci il genere: "));
-                    int anno=Integer.parseInt(IO.readln("Inserisci l'anno di uscita: "));
-                    if (anno>2026) throw new IllegalArgumentException("Non puoi inserire un libro che non è ancora uscito!");
-                    int pagine=Integer.parseInt(IO.readln("Inserisci il numero di pagine: "));
-                    if (pagine<=0) throw new IllegalArgumentException("Le pagine non possono essere negative!");
+                    IO.println("\nThriller, Giallo, Horror,\nFantasy, Scifi, Romanzo,\nCommedia, Storico, Romance");
+
+                    boolean continua=false;
+                    GenereLibro genere=null;
+                    while (!continua){
+                        try {
+                            genere=GenereLibro.valueOf(IO.readln("Inserisci il genere: "));
+                            continua=true;
+                        } catch (IllegalArgumentException IAE) {IO.println("Non esiste questo genere!");}
+                    }
+                    int anno=0;
+                    continua=false;
+                    while (!continua) {
+                        try {
+                            anno=Integer.parseInt(IO.readln("Inserisci l'anno di uscita: "));
+                            continua=true;
+                        } catch (IllegalArgumentException IAE) {IO.println(IAE.getMessage());}
+                    }
+                    int pagine=0;
+                    continua=false;
+                    while (!continua) {
+                        try {
+                            pagine=Integer.parseInt(IO.readln("Inserisci il numero di pagine: "));
+                            continua=true;
+                        } catch (IllegalArgumentException IAE) {IO.println(IAE.getMessage());}
+                    }
 
                     Libro newLibro=new Libro(titolo, autore, genere, anno, pagine);
-                    biblioteca.addLibro(newLibro, log);
+                    biblioteca.addLibro(newLibro);
+                    IO.println("Libro aggiunto!\n");
+                    break;
             }
 
             int scelta;
@@ -78,24 +114,28 @@ public class Main {
                         IO.println(biblioteca.toString());
                         break;
                     case 3:
-                        IO.println(log.toString());
+                        if (log.toString().isBlank()) {
+                            IO.println("Nessun log registrato!\n");
+                        }
+                        else IO.println(log.toString());
                         break;
                     default:
-                        IO.println("Qualcosa è andato storto!");
+                        IO.println("Qualcosa è andato storto!\n");
+                        break;
                 }
-            } while (scelta!=0);
+            } while (scelta>1);
         }
     }
 
     int menu() {
         IO.println("1 - Passa al giorno successivo");
-        IO.println("2 - Visualizza libri presi in prestito");
+        IO.println("2 - Visualizza libri");
         IO.println("3 - Visualizza i log");
         IO.println("0 - Esci");
         while (true) {
             int scelta=Integer.parseInt(IO.readln("Cosa scegli? "));
-            if (scelta<0 || scelta>3) throw new IllegalArgumentException("Scelta non valida!");
-            return scelta;
+            if (scelta<0 || scelta>3) IO.print("Scelta non valida! ");
+            else return scelta;
         }
     }
 }

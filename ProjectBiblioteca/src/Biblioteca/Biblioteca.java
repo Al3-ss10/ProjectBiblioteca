@@ -1,4 +1,5 @@
 package Biblioteca;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -10,8 +11,7 @@ public class Biblioteca {
     private Map<String,Boolean> libriprestati;
 
     public Biblioteca(String nome, String paese) {
-        if (nome.length()<5)
-            throw new IllegalArgumentException("Il nome deve avere almeno 5 caratteri!");
+
         this.nome=checkNome(nome);
 
         this.paese=checkpaese(paese);
@@ -20,6 +20,9 @@ public class Biblioteca {
         libriprestati=new HashMap<String,Boolean>();
 
     }
+
+
+
 
     private String checkNome(String nome){
         if (nome.isEmpty()){throw new IllegalArgumentException("nome inesistente");}
@@ -43,28 +46,35 @@ public class Biblioteca {
     public ArrayList<Libro> getListaLibri() {return listaLibri;}
     public Map<String, Boolean> getLibriprestati() {return libriprestati;}
 
-    public void setLibriprestato(String codice, boolean valore) {
-        if (checkLibroPresente(codice)) {
-            if (checkPrestato(codice) == valore) {
+    public void setLibriprestato(Libro libro, boolean valore) {
+        if (checkLibroPresente(libro)) {
+            if (checkPrestato(libro) == valore) {
                 throw new IllegalArgumentException("ERRORE: libro già in prestito o libro già disponibile");
             } else {
-                libriprestati.put(codice, valore);
+                libriprestati.put(libro.getId(), valore);
             }
         }else{
             throw new IllegalArgumentException("libro non presente in biblioteca");
         }
     }
-    public void addLibro(Libro libro) {
+    public void addLibro(Libro libro,Log log) {
         listaLibri.add(libro);
         libriprestati.put(libro.getId(),false);
+        log.AggiungiLog(Main.oggi+": aggiunto il libro "+ libro.getTitolo()+" alla biblioteca");
+
     }
-    public boolean checkLibroPresente(String codice){
-        return listaLibri.contains(codice);
+    public boolean checkLibroPresente(Libro libro){
+        if (libriprestati.containsKey(libro)){
+            return listaLibri.contains(libro);
+        }else{
+            throw new IllegalArgumentException("libro non presente in biblioteca");
+        }
+
     }
 
-    public boolean checkPrestato(String codice){
-        if (checkLibroPresente(codice)){
-            return libriprestati.get(codice);
+    public boolean checkPrestato(Libro libro){
+        if (checkLibroPresente(libro)){
+            return libriprestati.get(libro.getId());
         }else {
             throw new IllegalArgumentException("libro non presente");
         }

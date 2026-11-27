@@ -1,11 +1,14 @@
 package Biblioteca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Main {
+    static LocalDate oggi = LocalDate.now();
     void main() {
+
         Biblioteca biblioteca=new Biblioteca("Biblioteca Comunale", "Dalmine");
         Log log=new Log();
         Random random=new Random();
@@ -21,9 +24,9 @@ public class Main {
         Libro libro1=new Libro("It","Stephen King", GenereLibro.horror, 1998, 350);
         Libro libro2=new Libro("La compagnia dell'Anello", "J.R.R.Tolkien", GenereLibro.fantasy, 1987, 500);
         Libro libro3=new Libro("I Promessi Sposi", "Alessandro Manzoni", GenereLibro.romanzo, 1840, 370);
-        biblioteca.addLibro(libro1);
-        biblioteca.addLibro(libro2);
-        biblioteca.addLibro(libro3);
+        biblioteca.addLibro(libro1,log);
+        biblioteca.addLibro(libro2,log);
+        biblioteca.addLibro(libro3,log);
 
         boolean esci=false;
         while (!esci) {
@@ -31,15 +34,19 @@ public class Main {
             Lettore lettore=listaLettori.get(random.nextInt(0, listaLettori.size()));
             switch (evento) {
                 case "Presta libro":
-                    IO.println("Evento - Presa in prestito di un libro!");
-                    Libro libroP=biblioteca.getListaLibri().get(
-                            random.nextInt(0, biblioteca.getListaLibri().size()
-                            ));
-                    IO.println(lettore.getNome()+" prende in prestito "+libroP.getTitolo()+"\n");
-                    if (biblioteca.getListaLibri().contains(libroP)) {
-                        lettore.PrendiLibro(libroP,biblioteca,log);
-                        biblioteca.getListaLibri().remove(libroP);
-                    } else IO.println(libroP.getTitolo()+" non è presente!");
+                    if (biblioteca.getListaLibri().isEmpty()) {
+                        IO.println("La lista dei libri è vuota!");
+                    } else {
+                        IO.println("Evento - Presa in prestito di un libro!");
+                        Libro libroP=biblioteca.getListaLibri().get(
+                                random.nextInt(0, biblioteca.getListaLibri().size()
+                                ));
+                        IO.println(lettore.getNome()+" prende in prestito "+libroP.getTitolo()+"\n");
+                        if (biblioteca.getListaLibri().contains(libroP)) {
+                            lettore.PrendiLibro(libroP,biblioteca,log);
+                            biblioteca.getListaLibri().remove(libroP);
+                        } else IO.println(libroP.getTitolo()+" non è presente!");
+                    }
                     break;
 
                 case "Restituisci libro":
@@ -54,7 +61,8 @@ public class Main {
                                     ));
                             IO.println("Evento - "+lettore.getNome()+" restituisce "+libroR.getTitolo()+"\n");
                             lettore.RestituisciLibro(libroR,biblioteca,log);
-                            biblioteca.getListaLibri().add(libroR);
+                            biblioteca.getListaLibri().add(libroR); //così si aggiornano bene quando un libro è prestato
+
                         }
                         catch (IllegalArgumentException IAE) {IO.println(IAE.getMessage());}
                     }
@@ -70,7 +78,7 @@ public class Main {
                     GenereLibro genere=null;
                     while (!continua){
                         try {
-                            genere=GenereLibro.valueOf(IO.readln("Inserisci il genere: "));
+                            genere=GenereLibro.valueOf(IO.readln("Inserisci il genere: ").toLowerCase());
                             continua=true;
                         } catch (IllegalArgumentException IAE) {IO.println("Non esiste questo genere!");}
                     }
@@ -92,7 +100,7 @@ public class Main {
                     }
 
                     Libro newLibro=new Libro(titolo, autore, genere, anno, pagine);
-                    biblioteca.addLibro(newLibro);
+                    biblioteca.addLibro(newLibro,log);
                     IO.println("Libro aggiunto!\n");
                     break;
             }
@@ -106,9 +114,7 @@ public class Main {
                         esci=true;
                         break;
                     case 1:
-                        for (Lettore lett:listaLettori) {
-                            lett.AggiornaTempo();
-                        }
+                       oggi=oggi.plusDays(1);
                         break;
                     case 2:
                         IO.println(biblioteca.toString());
@@ -133,7 +139,15 @@ public class Main {
         IO.println("3 - Visualizza i log");
         IO.println("0 - Esci");
         while (true) {
-            int scelta=Integer.parseInt(IO.readln("Cosa scegli? "));
+            int scelta = -1;
+            boolean continua=false;
+            while (!continua) {
+            try {
+                scelta=Integer.parseInt(IO.readln("Cosa scegli? "));
+                continua=true;
+            }catch (NumberFormatException IAE) {
+                    IO.println(IAE.getMessage());}
+            }
             if (scelta<0 || scelta>3) IO.print("Scelta non valida! ");
             else return scelta;
         }

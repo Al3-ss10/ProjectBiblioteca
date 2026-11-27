@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Lettore {
     private String nome;
     private int eta;
-    private LocalDate oggi;
+
 
     private Map<Libro, Integer> libri;
 
@@ -15,7 +15,7 @@ public class Lettore {
         libri = new HashMap<Libro, Integer>();
         this.nome=checkNome(nome.strip().toLowerCase());
         this.eta=checkEta(eta);
-        oggi=LocalDate.now();
+
     }
 
     // -- Checkers -- \\
@@ -57,13 +57,13 @@ public class Lettore {
     public void PrendiLibro(Libro libro, Biblioteca biblioteca,Log log) {
 
         String CodiceCorrente = libro.getId();
-        if (biblioteca.checkPrestato(CodiceCorrente)) {
+        if (biblioteca.checkPrestato(libro)) {
             throw new IllegalArgumentException("libro già in prestito");
         } else {
-            LocalDate oggi=LocalDate.now();
+
+            biblioteca.setLibriprestato(libro,true);
             libri.put(libro, 0);
-            biblioteca.setLibriprestato(CodiceCorrente,true);
-            log.AggiungiLog(oggi + ": preso in prestito il libro: "+libro.getTitolo());
+            log.AggiungiLog(Main.oggi + ": preso in prestito il libro: "+libro.getTitolo());
         }
     }
 
@@ -72,24 +72,17 @@ public class Lettore {
             throw new IllegalArgumentException("non puoi restituire un libro che non hai");
         }
 
-        String codice = libro.getId();
         int data;
-        if (biblioteca.checkPrestato(codice)) {
+        if (biblioteca.checkPrestato(libro) && libri.containsKey(libro) ) {
             data = libri.get(libro);
-            log.AggiungiLog(oggi.plusDays(data) + ": restituito il libro: "+libro.getTitolo());
+            log.AggiungiLog(Main.oggi + ": restituito il libro: "+libro.getTitolo());
             libri.remove(libro);
-            biblioteca.setLibriprestato(codice,false);
+            biblioteca.setLibriprestato(libro,false);
+        }else{
+            throw new IllegalArgumentException("non puoi restituire un libro che non hai in prestito");
         }
 
 
-    }
-
-    public void AggiornaTempo() {
-        for (Libro key : libri.keySet()) {
-            int giorno = libri.get(key);
-            giorno+=1;
-            libri.put(key, giorno);
-        }
     }
 
     @Override
